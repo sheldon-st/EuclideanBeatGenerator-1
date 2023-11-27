@@ -1,87 +1,92 @@
-import { makeAutoObservable } from "mobx"
-import React, { useContext, useRef } from "react"
-import { configure } from 'mobx';
-import Notes from '../assets/sounds/sounds';
-configure({ enforceActions: "never" })
+import { makeAutoObservable } from "mobx";
+import React, { useContext, useRef } from "react";
+import { configure } from "mobx";
+import Notes from "../assets/sounds/sounds";
+configure({ enforceActions: "never" });
 
 export default class RootStore {
-  constructor(instruments, settings, tempo, volume, preset = "default", playing = false) {
-    makeAutoObservable(this)
-    this.instruments = instruments
+  constructor(
+    instruments,
+    settings,
+    tempo,
+    volume,
+    preset = "default",
+    playing = false
+  ) {
+    makeAutoObservable(this);
+    this.instruments = instruments;
 
-    if(settings) {
-      this.settings = settings
-      this.settings.preset = this.loadPreset(preset)
-      if(!this.settings.voice) this.settings.voice = 'sine'
-    } else { 
+    if (settings) {
+      this.settings = settings;
+      this.settings.preset = this.loadPreset(preset);
+      if (!this.settings.voice) this.settings.voice = "sine";
+    } else {
       this.settings = {
         started: false,
         playing: playing,
         tempo: tempo,
         preset: this.loadPreset(preset),
         volume: volume,
-        voice: 'sine',
+        voice: "sine",
         beat: 0,
-        totalNotes: 15
-      }
+        totalNotes: 15,
+      };
     }
   }
 
   setinstruments = (instruments) => {
-    this.instruments = instruments
-  }
+    this.instruments = instruments;
+  };
 
   setSettings(settings) {
-    this.settings = settings
+    this.settings = settings;
   }
 
   setTempo = (tempo) => {
-    this.tempo = tempo
-  }
+    this.tempo = tempo;
+  };
 
   setVolume = (volume) => {
-    this.volume = volume
-  }
+    this.volume = volume;
+  };
 
   togglePlay = () => {
-    this.playing = !this.playing
-  }
+    this.playing = !this.playing;
+  };
 
   getPlaying() {
-    return this.playing
+    return this.playing;
   }
 
   setVoice(voice) {
-    this.settings.voice = voice
+    this.settings.voice = voice;
   }
 
-  loadPreset(preset){
-    switch(preset){
+  loadPreset(preset) {
+    switch (preset) {
       case "1":
-        break
+        break;
       case "2":
-        break
+        break;
       case "3":
-        break
+        break;
       case "4":
-        break
+        break;
       default:
-        return Notes
+        return Notes;
     }
-
   }
 }
 
-const RootStoreContext = React.createContext()
-export const useRootStore = () => useContext(RootStoreContext)
-
+const RootStoreContext = React.createContext();
+export const useRootStore = () => useContext(RootStoreContext);
 
 export function RootStoreProvider({ children, instruments, settings }) {
-  const store = useRef(new RootStore(instruments, settings))
+  const store = useRef(new RootStore(instruments, settings));
 
   return (
     <RootStoreContext.Provider value={store.current}>
       {children}
     </RootStoreContext.Provider>
-  )
+  );
 }
